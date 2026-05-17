@@ -1,0 +1,9 @@
+{
+  "name": "devcontainer-codespaces-security",
+  "version": "1.0.0",
+  "description": "GitHub Copilot セキュリティ対策検証リポジトリ",
+  "scripts": {
+    "dev": "node src/index.js",
+    "test": "echo \"No tests yet\""
+  }
+}

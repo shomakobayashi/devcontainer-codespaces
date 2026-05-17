@@ -1,0 +1,88 @@
+{
+  "name": "Secure Copilot Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+
+  // -------------------------------------------------------
+  // 拡張機能の allowlist
+  // ここに列挙した拡張機能のみインストールされる
+  // -------------------------------------------------------
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // GitHub Copilot（必須）
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+
+        // 開発ツール（承認済み）
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next",
+
+        // セキュリティ
+        "GitHub.vscode-github-actions",
+        "MS-SarifViewer.sarif-viewer"
+      ],
+      "settings": {
+        // -------------------------------------------------------
+        // Copilot Agent Mode の自動承認を強制 OFF
+        // -------------------------------------------------------
+        "github.copilot.chat.agent.runTasks": false,
+
+        // -------------------------------------------------------
+        // Editor セキュリティ設定
+        // -------------------------------------------------------
+        // ワークスペース外へのリンクナビゲーションを禁止
+        "security.workspace.trust.enabled": true,
+        // 自動的に信頼しない
+        "security.workspace.trust.untrustedFiles": "prompt",
+
+        // 拡張機能の自動更新を無効化（管理者が許可したバージョンのみ）
+        "extensions.autoUpdate": false,
+        "extensions.autoCheckUpdates": false,
+
+        // -------------------------------------------------------
+        // Copilot の設定
+        // -------------------------------------------------------
+        // インラインサジェストの自動表示
+        "github.copilot.enable": {
+          "*": true,
+          // 機密ファイルは Copilot から除外
+          ".env": false,
+          "*.pem": false,
+          "*.key": false,
+          "*.p12": false,
+          "*.pfx": false
+        },
+
+        // -------------------------------------------------------
+        // ターミナル設定
+        // -------------------------------------------------------
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  // -------------------------------------------------------
+  // Codespaces のライフサイクル設定
+  // -------------------------------------------------------
+  // コンテナ起動後に実行するコマンド
+  "postCreateCommand": "npm install",
+
+  // -------------------------------------------------------
+  // ポートフォワード設定（必要最小限）
+  // -------------------------------------------------------
+  "forwardPorts": [3000],
+  "portsAttributes": {
+    "3000": {
+      "label": "App",
+      // プライベートのみ（publicにしない）
+      "onAutoForward": "notify",
+      "visibility": "private"
+    }
+  },
+
+  // -------------------------------------------------------
+  // コンテナ内ユーザー（root を使わない）
+  // -------------------------------------------------------
+  "remoteUser": "node"
+}
